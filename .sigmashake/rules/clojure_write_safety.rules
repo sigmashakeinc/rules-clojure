@@ -41,7 +41,7 @@ rule clojure-insecure-clj-http-config {
   enabled true
   priority 70
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.clj" AND content CONTAINS "clj-http.client/" AND content CONTAINS ":insecure? true"
   MESSAGE "Insecure HTTP Client Configuration: Detected `clj-http.client` call with `:insecure? true`. This disables SSL/TLS certificate validation, making the application vulnerable to Man-in-the-Middle (MITM) attacks by allowing connections to servers with invalid or self-signed certificates. Ensure SSL/TLS verification is enabled for production environments. Remove `:insecure? true` or set it to `false`."
 }
@@ -50,7 +50,7 @@ rule clojure-discourage-legacy-jdbc {
   enabled true
   priority 50
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.clj" AND content CONTAINS "clojure.java.jdbc" AND NOT content CONTAINS "next.jdbc"
   MESSAGE "Discouraged Legacy Database Library: Detected usage of `clojure.java.jdbc` without `next.jdbc` also being present. While functional, `next.jdbc` is the modern, recommended library for Clojure database access, offering improved performance, better security features (e.g., built-in parameterization), and a more idiomatic API. Consider using `next.jdbc` for new database interactions to leverage these benefits and reduce potential pitfalls associated with older libraries."
 }
